@@ -1,14 +1,12 @@
 package com.itAcademy.ex14diceplayer.model;
 
-
-
-import com.sun.istack.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
+
 
 @Entity
 @Table(name = "players")
@@ -16,26 +14,15 @@ public class Player extends AbstractEntity implements Serializable {
 
     @Column(name = "player_username")
     private String username;
-
-    @Column(name = "player_registration")
-    @NotNull
-    private Date registrationDate;
-
-    public Player(String username, Date registrationDate) {
-        this.username = username;
-        this.registrationDate = registrationDate;
-    }
-
-    public Date getRegistrationDate() {
-        return registrationDate;
-    }
-
-    public void setRegistrationDate(Date registrationDate) {
-        this.registrationDate = registrationDate;
-    }
+    @Column(name = "registration_date")
+    private final String registrationDate = currentDate();
 
     public Player(String username) {
         this.username = username;
+    }
+
+    public String getRegistrationDate() {
+        return registrationDate;
     }
 
     public String getUsername() {
@@ -46,4 +33,10 @@ public class Player extends AbstractEntity implements Serializable {
         this.username = username;
     }
 
+
+    private String currentDate() {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date date = new Date();
+        return formatter.format(date);
+    }
 }
