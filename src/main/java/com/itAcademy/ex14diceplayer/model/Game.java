@@ -25,7 +25,6 @@ public class Game extends AbstractEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "player_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private Player player;
 
     //constructor #1 with parameter
