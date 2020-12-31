@@ -1,22 +1,36 @@
 package com.itAcademy.ex14diceplayer.service;
 
 import com.itAcademy.ex14diceplayer.model.Game;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import com.itAcademy.ex14diceplayer.model.Player;
 
+
+import java.util.List;
 import java.util.Optional;
 
 public interface IGameService {
 
-    Iterable<Game> findAll();
+    //Add new game
+    Game addGame(Game game);
 
-    Page<Game> findAll(Pageable pageable);
+    //Find a game by id
+    Optional <Game> findGameById(Long id);
 
-    Optional<Game> findById(Long id);
+    //Get list of games by an specific player
+    List<Game> findAllGamesByPlayer(Player player);
 
-    Game save(Game game);
-
+    //Delete a game by id
     void deleteById(Long id);
 
+    //Delete all games
+    void deleteAllGames();
+
+    //Roll dice
+    int  rollDice(Player player);
+
+    //Player wins or not
+    boolean isWinner(int dice1, int dice2);
+
+    //update win average rolls
+    void updateWinAvg(Player player);
 
 }
