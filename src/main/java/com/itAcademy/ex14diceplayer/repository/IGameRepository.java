@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface IGameRepository extends JpaRepository<Game, Long> {
 
 
-
 }
