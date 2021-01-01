@@ -92,6 +92,7 @@ public class Player extends AbstractEntity implements Serializable {
                 '}';
     }
 
+
     /* private String currentDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();

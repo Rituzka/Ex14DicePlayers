@@ -5,40 +5,31 @@ import com.itAcademy.ex14diceplayer.exception.ResourceNotFoundException;
 import com.itAcademy.ex14diceplayer.model.Player;
 import com.itAcademy.ex14diceplayer.repository.IPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PlayerServiceImpl implements IPlayerService {
     @Autowired
     private IPlayerRepository playerRepository;
 
-    //Add new player
+    //Add a new player
     @Override
-    @Transactional
     public Player addPlayer(Player player) {
         return playerRepository.save(player);
     }
     //Find all players
     @Override
-    @Transactional(readOnly = true)
     public Iterable<Player> findAll() {
         return playerRepository.findAll();
     }
-    //find all players with pageable
+    //Find a player by Id
     @Override
-    @Transactional(readOnly = true)
-    public Page<Player> findAll(Pageable pageable) {
-        return playerRepository.findAll(pageable);
-    }
-    //Find a player by id
-    @Override
-    @Transactional(readOnly = true)
     public Optional<Player> findPlayerById(Long id) {
         Optional<Player> playerFound = playerRepository.findById(id);
         if(playerFound.isPresent())
@@ -46,45 +37,48 @@ public class PlayerServiceImpl implements IPlayerService {
         else
             throw new ResourceNotFoundException("Player not found");
     }
-
+    //Modify username of a player
     @Override
-    @Transactional
-    public void updatePlayer(Player playerRequest) {
+    public void updateUsernamePlayer(Player playerRequest) {
         playerRepository.findById(playerRequest.getId()).map(player -> {
-
-            player.setUsername(playerRequest.getUsername());
-            player.setRegistrationDate(playerRequest.getRegistrationDate());
-            player.setGames(playerRequest.getGames());
-            player.setWinnerAvg(player.getWinnerAvg());
-
+                    player.setUsername(playerRequest.getUsername());
                     return playerRepository.save(player);
-        }
+                }
         ).orElseThrow(() -> new ResourceNotFoundException("Shop not found"));
     }
 
+      //Show players win average
     @Override
-    @Transactional
-    public void deletePlayerById(Long id) {
-        playerRepository.deleteById(id);
+    public Double showRankingWinnersAvg(List<Player> players) {
+       return players
+                .stream()
+                .collect(Collectors.averagingDouble(Player::getWinnerAvg));
     }
 
-    @Override
-    public void deleteAllPlayers() {
-
-    }
-
-    @Override
-    public Double showWinnersRanking(List<Player> players) {
-        return null;
-    }
-
+    //Find the Player with the highest win average
     @Override
     public Player findPlayerByWinnerAvg() {
-        return null;
-    }
+        List<Player> players = (List<Player>) this.findAll();
 
+       return players
+                .stream()
+                .max(Comparator.comparing(Player::getWinnerAvg))
+                .orElseThrow(NoSuchElementException::new);
+    }
+    //Find the Player with the lowest win average
     @Override
     public Player findPlayerByLowAvg() {
-        return null;
+            List<Player> players = (List<Player>) this.findAll();
+
+            return players
+                    .stream()
+                    .min(Comparator.comparing(Player::getWinnerAvg))
+                    .orElseThrow(NoSuchElementException::new);
+    }
+
+    //Delete a player by id
+    @Override
+    public void deletePlayerById(Long id) {
+        playerRepository.deleteById(id);
     }
 }

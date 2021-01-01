@@ -21,7 +21,7 @@ public class PlayerController {
     @Autowired
     IPlayerService playerservice;
 
-    //create a new Player
+    //Add a new Player
     @PostMapping
     public ResponseEntity<?> addNewPlayer(Player player) {
         return ResponseEntity.status(HttpStatus.CREATED).body(playerservice.addPlayer(player));
@@ -35,6 +35,7 @@ public class PlayerController {
             throw new ResourceNotFoundException("Player not found");
         else
             return ResponseEntity.ok(playerDB);
+
     }
 
     //Update a player by id
