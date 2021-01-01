@@ -14,7 +14,7 @@ public class Player extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = -5799651275963827478L;
 
-    @Column(name = "player_username", unique = true, length = 50, columnDefinition = "default 'Anonymous'" )
+    @Column(name = "player_username", unique = true, length = 50, columnDefinition = "default 'Anonymous'")
     String username;
 
     @Column(name = "registration_date")
@@ -36,7 +36,8 @@ public class Player extends AbstractEntity implements Serializable {
     }
 
     //Constructor #2
-    public Player(){}
+    public Player() {
+    }
 
 
     public String getUsername() {
@@ -67,12 +68,17 @@ public class Player extends AbstractEntity implements Serializable {
         return games;
     }
 
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
+
     public void setGames(Game game) {
         this.games.add(game);
     }
+
     //put default username "Anonymous" in case finds an empty name
     private String verifyUsername(String username) {
-        if(username.isEmpty()) username = "Anonymous";
+        if (username.isEmpty()) username = "Anonymous";
         return username;
     }
 

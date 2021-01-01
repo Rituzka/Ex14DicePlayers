@@ -24,13 +24,13 @@ public class PlayerController {
     //create a new Player
     @PostMapping
     public ResponseEntity<?> addNewPlayer(Player player) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(playerservice.save(player));
+        return ResponseEntity.status(HttpStatus.CREATED).body(playerservice.addPlayer(player));
     }
 
     //get a player by id
     @GetMapping("/{id}")
     public ResponseEntity<?> getPlayerById(@PathVariable Long id) {
-        Optional<Player> playerDB = playerservice.findById(id);
+        Optional<Player> playerDB = playerservice.findPlayerById(id);
         if (!playerDB.isPresent())
             throw new ResourceNotFoundException("Player not found");
         else
@@ -40,7 +40,7 @@ public class PlayerController {
     //Update a player by id
     @PutMapping("/{id}")
     public ResponseEntity<?> updatePlayerById(@PathVariable Long id, @RequestBody Player playerUpdate) {
-        Optional<Player> playerDB = playerservice.findById(id);
+        Optional<Player> playerDB = playerservice.findPlayerById(id);
         if (!playerDB.isPresent())
             throw new ResourceNotFoundException("Player not found");
         else {
@@ -52,10 +52,10 @@ public class PlayerController {
     //Delete a player
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePlayerById(@PathVariable Long id) {
-        if (!playerservice.findById(id).isPresent())
+        if (!playerservice.findPlayerById(id).isPresent())
             throw new ResourceNotFoundException("Player not found");
         else
-            playerservice.deleteById(id);
+            playerservice.deletePlayerById(id);
         return ResponseEntity.ok().build();
 
     }

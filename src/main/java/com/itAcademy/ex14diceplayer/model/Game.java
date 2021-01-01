@@ -39,7 +39,6 @@ public class Game extends AbstractEntity implements Serializable {
     public Game() {
     }
 
-
     //getters & setters
 
     public int getDice1() {
@@ -81,6 +80,8 @@ public class Game extends AbstractEntity implements Serializable {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
+
 
     @Override
     public String toString() {

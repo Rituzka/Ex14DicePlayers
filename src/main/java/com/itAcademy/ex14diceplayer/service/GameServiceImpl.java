@@ -76,8 +76,8 @@ public class GameServiceImpl implements IGameService {
 
     @Override
     public void winAvg(Player player) {
-     List<Game> gamesWon = gameRepository.findAllByPlayer(player);
-     successAverage(gamesWon);
+        List<Game> gamesWon = gameRepository.findAllByPlayer(player);
+        successAverage(gamesWon);
     }
 
     @Override
@@ -85,33 +85,22 @@ public class GameServiceImpl implements IGameService {
         return result == 7;
     }
 
-   //PRIVATE METHODS
+    //PRIVATE METHODS
     //calculates the average of all games from one player
-   public void successAverage(List<Game> successRolls) {
+    public void successAverage(List<Game> successRolls) {
         double totalGames = successRolls.stream().map(Game::getResult).count();
 
         List<Game> success = successRolls.stream()
                 .filter(s -> s.getResult() == 7)
                 .collect(Collectors.toList());
 
-       roundDecimals(success.size() / totalGames);
+        roundDecimals(success.size() / totalGames);
 
-   }
+    }
+
     //support method for successAverage, round decimals in the result percentage
     private void roundDecimals(double number) {
         DecimalFormat formatter = new DecimalFormat("###.##%");
         formatter.format(number);
     }
-
-
-
-
-
-    /*@Override
-    @Transactional(readOnly = true)
-    public Iterable<Game> findAll() {
-        return gameRepository.findAll();
-    }*/
-
 }
-

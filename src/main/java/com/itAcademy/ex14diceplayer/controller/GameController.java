@@ -23,13 +23,13 @@ public class GameController {
     //Create new game
     @PostMapping("/games")
     public ResponseEntity<?> addNewGame(@RequestBody Game game) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(gameService.save(game));
+        return ResponseEntity.status(HttpStatus.CREATED).body(gameService.addGame(game));
     }
 
     //get a game by id
     @GetMapping("/games/{id}")
     public ResponseEntity<?> getGameById(@PathVariable Long id) {
-        Optional<Game> gameDB = gameService.findById(id);
+        Optional<Game> gameDB = gameService.findGameById(id);
         if (!gameDB.isPresent()) {
             throw new ResourceNotFoundException("Game not found");
         } else
@@ -39,13 +39,11 @@ public class GameController {
     //Delete a game
     @DeleteMapping("/games/{id}")
     public ResponseEntity<?> deleteGame(@PathVariable Long id) {
-        if (!gameService.findById(id).isPresent()) {
+        if (!gameService.findGameById(id).isPresent()) {
             throw new ResourceNotFoundException("Game not found");
         } else {
             gameService.deleteById(id);
             return ResponseEntity.ok().build();
         }
     }
-
-
 }
