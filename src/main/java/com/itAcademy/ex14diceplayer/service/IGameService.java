@@ -25,12 +25,12 @@ public interface IGameService {
     void deleteAllGames();
 
     //Roll dice
-    int  rollDice(Player player);
+    Long  rollDice(Player player);
 
     //Player wins or not
-    boolean isWinner(int dice1, int dice2);
+    boolean isWinner(int rollResult);
 
     //update win average rolls
-    void updateWinAvg(Player player);
+    void winAvg(Player player);
 
 }

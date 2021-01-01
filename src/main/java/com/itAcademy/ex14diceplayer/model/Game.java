@@ -16,6 +16,8 @@ public class Game extends AbstractEntity implements Serializable {
     private int dice1;
     @Column(name = "dice_2")
     private int dice2;
+    @Column
+    private int result;
     @Column(name = "winner")
     private boolean isWinner;
 
@@ -25,9 +27,10 @@ public class Game extends AbstractEntity implements Serializable {
     private Player player;
 
     //Constructor #1
-    public Game(int dice1, int dice2, boolean isWinner, Player player) {
+    public Game(int dice1, int dice2, int result, boolean isWinner, Player player) {
         this.dice1 = dice1;
         this.dice2 = dice2;
+        this.result = result;
         this.isWinner = isWinner;
         this.player = player;
     }
@@ -53,6 +56,14 @@ public class Game extends AbstractEntity implements Serializable {
 
     public void setDice2(int dice2) {
         this.dice2 = dice2;
+    }
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
     }
 
     public boolean isWinner() {
