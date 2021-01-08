@@ -1,6 +1,5 @@
 package com.itAcademy.ex14diceplayer.service;
 
-import com.itAcademy.ex14diceplayer.exception.ResourceNotFoundException;
 import com.itAcademy.ex14diceplayer.model.Game;
 import com.itAcademy.ex14diceplayer.model.Player;
 import com.itAcademy.ex14diceplayer.repository.IGameRepository;
@@ -8,33 +7,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 @Service
 public class GameServiceImpl implements IGameService {
+
     @Autowired
     private IGameRepository gameRepository;
     @Autowired
     private PlayerServiceImpl playerservice;
 
+
     //Add a game
     @Override
-    public Game addGame(Game game) {
-        return gameRepository.save(game);
+    public void addGame(Game game) {
+        gameRepository.save(game);
     }
 
     //find a game by id
     @Override
-    @Transactional(readOnly = true)
-    public Optional<Game> findGameById(Long id) {
-        Optional<Game> gamefound = gameRepository.findById(id);
-        if (gamefound.isPresent())
-            return gamefound;
-        else throw new ResourceNotFoundException("Game not found");
+    public Game findGameById(Long id) {
+        return gameRepository.findById(id).get();
     }
 
     //gives a list of games of one Player
@@ -46,13 +41,11 @@ public class GameServiceImpl implements IGameService {
 
     //delete
     @Override
-    @Transactional
     public void deleteById(Long id) {
         gameRepository.deleteById(id);
     }
 
     @Override
-    @Transactional
     public void deleteAllGames() {
         gameRepository.deleteAll();
     }
@@ -66,10 +59,9 @@ public class GameServiceImpl implements IGameService {
         boolean isWinner = isWinner(result);
 
         Game newGame = new Game(dice1, dice2, result, isWinner, player);
-        this.addGame(newGame);
-        player.setGames(newGame);
+        addGame(newGame);
         winAvg(player);
-        playerservice.save(player);
+        playerservice.updatePlayer(player);
 
         return newGame.getId();
     }
@@ -77,7 +69,8 @@ public class GameServiceImpl implements IGameService {
     @Override
     public void winAvg(Player player) {
         List<Game> gamesWon = gameRepository.findAllByPlayer(player);
-        successAverage(gamesWon);
+        double winAvg = successAverage(gamesWon);
+        player.setWinnerAvg(winAvg);
     }
 
     @Override
@@ -87,20 +80,13 @@ public class GameServiceImpl implements IGameService {
 
     //PRIVATE METHODS
     //calculates the average of all games from one player
-    public void successAverage(List<Game> successRolls) {
+    public double successAverage(List<Game> successRolls) {
         double totalGames = successRolls.stream().map(Game::getResult).count();
 
         List<Game> success = successRolls.stream()
                 .filter(s -> s.getResult() == 7)
                 .collect(Collectors.toList());
 
-        roundDecimals(success.size() / totalGames);
-
-    }
-
-    //support method for successAverage, round decimals in the result percentage
-    private void roundDecimals(double number) {
-        DecimalFormat formatter = new DecimalFormat("###.##%");
-        formatter.format(number);
+        return success.size() / totalGames * 100;
     }
 }

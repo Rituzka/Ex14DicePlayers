@@ -5,15 +5,14 @@ import com.itAcademy.ex14diceplayer.model.Player;
 
 
 import java.util.List;
-import java.util.Optional;
 
 public interface IGameService {
 
     //Add new game
-    Game addGame(Game game);
+    void addGame(Game game);
 
     //Find a game by id
-    Optional <Game> findGameById(Long id);
+    Game findGameById(Long id);
 
     //Get list of games by an specific player
     List<Game> findAllGamesByPlayer(Player player);
@@ -25,7 +24,7 @@ public interface IGameService {
     void deleteAllGames();
 
     //Roll dice
-    Long  rollDice(Player player);
+    Long rollDice(Player player);
 
     //Player wins or not
     boolean isWinner(int rollResult);

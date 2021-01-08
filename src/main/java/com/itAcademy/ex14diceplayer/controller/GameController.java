@@ -2,13 +2,14 @@ package com.itAcademy.ex14diceplayer.controller;
 
 import com.itAcademy.ex14diceplayer.exception.ResourceNotFoundException;
 import com.itAcademy.ex14diceplayer.model.Game;
-import com.itAcademy.ex14diceplayer.service.IGameService;
-import com.itAcademy.ex14diceplayer.service.IPlayerService;
+import com.itAcademy.ex14diceplayer.model.Player;
+import com.itAcademy.ex14diceplayer.service.GameServiceImpl;
+import com.itAcademy.ex14diceplayer.service.PlayerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -16,34 +17,39 @@ import java.util.Optional;
 public class GameController {
 
     @Autowired
-    IGameService gameService;
+    GameServiceImpl gameService;
     @Autowired
-    IPlayerService playerService;
+    PlayerServiceImpl playerService;
 
-    //Create new game
-    @PostMapping("/games")
-    public ResponseEntity<?> addNewGame(@RequestBody Game game) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(gameService.addGame(game));
+    //Create new game by a player
+    @PostMapping("/{id}/games/newgame")
+    public Game addNewGame(@PathVariable(name = "id") Long id) {
+        Optional<Player> playerFound = playerService.findPlayerById(id);
+        if (playerFound.isPresent()) {
+            Long gameId = gameService.rollDice(playerFound.get());
+            return gameService.findGameById(gameId);
+        } else
+            throw new ResourceNotFoundException("Player not Found");
     }
 
     //get a game by id
     @GetMapping("/games/{id}")
     public ResponseEntity<?> getGameById(@PathVariable Long id) {
-        Optional<Game> gameDB = gameService.findGameById(id);
-        if (!gameDB.isPresent()) {
-            throw new ResourceNotFoundException("Game not found");
-        } else
-            return ResponseEntity.ok(gameDB);
+        Game game = gameService.findGameById(id);
+        return ResponseEntity.ok().body(game);
     }
 
     //Delete a game
     @DeleteMapping("/games/{id}")
     public ResponseEntity<?> deleteGame(@PathVariable Long id) {
-        if (!gameService.findGameById(id).isPresent()) {
-            throw new ResourceNotFoundException("Game not found");
-        } else {
-            gameService.deleteById(id);
-            return ResponseEntity.ok().build();
-        }
+        gameService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    //Get games from a player
+    @GetMapping("/{id}/games")
+    public ResponseEntity<?> getGamesByPlayer(@PathVariable(name = "id") Player player) {
+        List<Game> games = gameService.findAllGamesByPlayer(player);
+        return ResponseEntity.ok().body(games);
     }
 }

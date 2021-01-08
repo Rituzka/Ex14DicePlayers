@@ -4,6 +4,7 @@ package com.itAcademy.ex14diceplayer.service;
 import com.itAcademy.ex14diceplayer.exception.ResourceNotFoundException;
 import com.itAcademy.ex14diceplayer.model.Player;
 import com.itAcademy.ex14diceplayer.repository.IPlayerRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,37 +21,41 @@ public class PlayerServiceImpl implements IPlayerService {
 
     //Add a new player
     @Override
-    public Player addPlayer(Player player) {
-        return playerRepository.save(player);
+    public void addPlayer(Player player) {
+        playerRepository.save(player);
     }
+
     //Find all players
     @Override
     public Iterable<Player> findAll() {
         return playerRepository.findAll();
     }
+
     //Find a player by Id
     @Override
     public Optional<Player> findPlayerById(Long id) {
         Optional<Player> playerFound = playerRepository.findById(id);
-        if(playerFound.isPresent())
-        return playerFound;
+        if (playerFound.isPresent())
+            return playerFound;
         else
             throw new ResourceNotFoundException("Player not found");
     }
+
     //Modify username of a player
     @Override
-    public void updateUsernamePlayer(Player playerRequest) {
-        playerRepository.findById(playerRequest.getId()).map(player -> {
-                    player.setUsername(playerRequest.getUsername());
-                    return playerRepository.save(player);
+    public void updatePlayer(Player playerRequest) {
+        playerRepository.findById(playerRequest.getId()).map(playerDB -> {
+                    BeanUtils.copyProperties(playerRequest, playerDB);
+                    ;
+                    return playerRepository.save(playerDB);
                 }
         ).orElseThrow(() -> new ResourceNotFoundException("Shop not found"));
     }
 
-      //Show players win average
+    //Show players win average
     @Override
     public Double showRankingWinnersAvg(List<Player> players) {
-       return players
+        return players
                 .stream()
                 .collect(Collectors.averagingDouble(Player::getWinnerAvg));
     }
@@ -60,20 +65,21 @@ public class PlayerServiceImpl implements IPlayerService {
     public Player findPlayerByWinnerAvg() {
         List<Player> players = (List<Player>) this.findAll();
 
-       return players
+        return players
                 .stream()
                 .max(Comparator.comparing(Player::getWinnerAvg))
                 .orElseThrow(NoSuchElementException::new);
     }
+
     //Find the Player with the lowest win average
     @Override
     public Player findPlayerByLowAvg() {
-            List<Player> players = (List<Player>) this.findAll();
+        List<Player> players = (List<Player>) this.findAll();
 
-            return players
-                    .stream()
-                    .min(Comparator.comparing(Player::getWinnerAvg))
-                    .orElseThrow(NoSuchElementException::new);
+        return players
+                .stream()
+                .min(Comparator.comparing(Player::getWinnerAvg))
+                .orElseThrow(NoSuchElementException::new);
     }
 
     //Delete a player by id

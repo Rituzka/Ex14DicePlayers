@@ -1,9 +1,7 @@
 package com.itAcademy.ex14diceplayer.controller;
 
-import com.itAcademy.ex14diceplayer.exception.ResourceNotFoundException;
 import com.itAcademy.ex14diceplayer.model.Player;
-import com.itAcademy.ex14diceplayer.service.IPlayerService;
-import org.springframework.beans.BeanUtils;
+import com.itAcademy.ex14diceplayer.service.PlayerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,61 +9,67 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @RestController
 @RequestMapping("/players")
 public class PlayerController {
 
     @Autowired
-    IPlayerService playerservice;
+    PlayerServiceImpl playerService;
 
     //Add a new Player
     @PostMapping
-    public ResponseEntity<?> addNewPlayer(Player player) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(playerservice.addPlayer(player));
+    public ResponseEntity<?> addNewPlayer(@RequestBody Player player) {
+        playerService.addPlayer(player);
+        return ResponseEntity.status(HttpStatus.CREATED).body(player);
     }
 
     //get a player by id
     @GetMapping("/{id}")
-    public ResponseEntity<?> getPlayerById(@PathVariable Long id) {
-        Optional<Player> playerDB = playerservice.findPlayerById(id);
-        if (!playerDB.isPresent())
-            throw new ResourceNotFoundException("Player not found");
-        else
-            return ResponseEntity.ok(playerDB);
-
+    public Optional<Player> getPlayerById(@PathVariable Long id) {
+        return playerService.findPlayerById(id);
     }
 
     //Update a player by id
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePlayerById(@PathVariable Long id, @RequestBody Player playerUpdate) {
-        Optional<Player> playerDB = playerservice.findPlayerById(id);
-        if (!playerDB.isPresent())
-            throw new ResourceNotFoundException("Player not found");
-        else {
-            BeanUtils.copyProperties(playerUpdate, playerDB);
-            return ResponseEntity.status(HttpStatus.CREATED).body(playerDB.get());
-        }
+    public ResponseEntity<?> updatePlayerById(@RequestBody Player playerUpdate) {
+        playerService.updatePlayer(playerUpdate);
+        return ResponseEntity.status(HttpStatus.CREATED).body(playerUpdate);
     }
 
     //Delete a player
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePlayerById(@PathVariable Long id) {
-        if (!playerservice.findPlayerById(id).isPresent())
-            throw new ResourceNotFoundException("Player not found");
-        else
-            playerservice.deletePlayerById(id);
+        playerService.deletePlayerById(id);
         return ResponseEntity.ok().build();
 
     }
 
     //Get all the players
     @GetMapping
-    public List<Player> getAllPlayers() {
-        return StreamSupport
-                .stream(playerservice.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+    public ResponseEntity<?> getAllPlayers() {
+        List<Player> list = (List<Player>) playerService.findAll();
+        return ResponseEntity.ok().body(list);
+    }
+
+    //Get average ranking results
+    @GetMapping("/ranking")
+    public Double getAvgRanking() {
+        List<Player> listRank = (List<Player>) playerService.findAll();
+        return playerService.showRankingWinnersAvg(listRank);
+    }
+
+    //Get the player with the highest ranking
+    @GetMapping("/ranking/winner")
+    public ResponseEntity<?> getWinner() {
+        Player winner = playerService.findPlayerByWinnerAvg();
+        return ResponseEntity.ok().body(winner);
+    }
+
+    //Get the player with the lowest ranking
+    @GetMapping("/ranking/loser")
+    public ResponseEntity<?> getloser() {
+        Player loser = playerService.findPlayerByLowAvg();
+        return ResponseEntity.ok().body(loser);
     }
 }

@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface IPlayerService {
 
     //add a new player
-    Player addPlayer(Player player);
+    void addPlayer(Player player);
 
     //find all players
     Iterable<Player> findAll();
@@ -17,7 +17,7 @@ public interface IPlayerService {
     Optional<Player> findPlayerById(Long id);
 
     //update the username of a player
-    void updateUsernamePlayer(Player player);
+    void updatePlayer(Player player);
 
     //Ranking of player by the win average games
     Double showRankingWinnersAvg(List<Player> players);

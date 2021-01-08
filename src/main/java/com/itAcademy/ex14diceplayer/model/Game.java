@@ -1,6 +1,7 @@
 package com.itAcademy.ex14diceplayer.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -13,18 +14,20 @@ import java.io.Serializable;
 public class Game extends AbstractEntity implements Serializable {
 
     @Column(name = "dice_1")
-    private int dice1;
+    int dice1;
     @Column(name = "dice_2")
-    private int dice2;
+    int dice2;
     @Column
-    private int result;
+    int result;
     @Column(name = "winner")
-    private boolean isWinner;
+    boolean isWinner;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "player_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private Player player;
+
 
     //Constructor #1
     public Game(int dice1, int dice2, int result, boolean isWinner, Player player) {
@@ -82,7 +85,6 @@ public class Game extends AbstractEntity implements Serializable {
     }
 
 
-
     @Override
     public String toString() {
         return "Game{" +
@@ -92,28 +94,5 @@ public class Game extends AbstractEntity implements Serializable {
                 ", player=" + player +
                 '}';
     }
-  /*private int rollDice() {
-        return (int) Math.floor(Math.random() * 6 + 1);
-    }
-
-    private boolean winGame(int result) {
-        return result == 7;
-    }*/
-
-   /* public String successAverage(List<Game> successRolls) {
-        double totalGames = successRolls.stream().map(Game::getResult).count();
-
-        List<Game> success = successRolls.stream()
-                .filter(s -> s.getResult() == 7)
-                .collect(Collectors.toList());
-
-        return roundDecimals(success.size() / totalGames);
-
-    }
-
-    private String roundDecimals(double number) {
-        DecimalFormat formatter = new DecimalFormat("###.##%");
-        return formatter.format(number);
-    }*/
 
 }
