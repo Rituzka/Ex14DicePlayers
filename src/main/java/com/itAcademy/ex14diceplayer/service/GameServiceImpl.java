@@ -5,7 +5,6 @@ import com.itAcademy.ex14diceplayer.model.Player;
 import com.itAcademy.ex14diceplayer.repository.IGameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,9 +33,8 @@ public class GameServiceImpl implements IGameService {
 
     //gives a list of games of one Player
     @Override
-    @Transactional(readOnly = true)
-    public List<Game> findAllGamesByPlayer(Player player) {
-        return gameRepository.findAllByPlayer(player);
+    public List<Game> findAllGamesByPlayer(Long player_id) {
+        return gameRepository.findAllByPlayer(player_id);
     }
 
     //delete
@@ -58,7 +56,8 @@ public class GameServiceImpl implements IGameService {
 
         boolean isWinner = isWinner(result);
 
-        Game newGame = new Game(dice1, dice2, result, isWinner, player);
+        Long player_id = player.getId();
+        Game newGame = new Game(dice1, dice2, result, isWinner, player_id);
         addGame(newGame);
         winAvg(player);
         playerservice.updatePlayer(player);
@@ -68,7 +67,7 @@ public class GameServiceImpl implements IGameService {
 
     @Override
     public void winAvg(Player player) {
-        List<Game> gamesWon = gameRepository.findAllByPlayer(player);
+        List<Game> gamesWon = gameRepository.findAllByPlayer(player.getId());
         double winAvg = successAverage(gamesWon);
         player.setWinnerAvg(winAvg);
     }

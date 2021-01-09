@@ -15,7 +15,7 @@ public interface IGameService {
     Game findGameById(Long id);
 
     //Get list of games by an specific player
-    List<Game> findAllGamesByPlayer(Player player);
+    List<Game> findAllGamesByPlayer(Long player_id);
 
     //Delete a game by id
     void deleteById(Long id);

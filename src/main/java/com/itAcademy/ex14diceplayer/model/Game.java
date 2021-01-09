@@ -1,41 +1,29 @@
 package com.itAcademy.ex14diceplayer.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
 import java.io.Serializable;
 
 
-@Entity
-@Table(name = "games")
+
+@Document(collection = "games")
 public class Game extends AbstractEntity implements Serializable {
 
-    @Column(name = "dice_1")
     int dice1;
-    @Column(name = "dice_2")
     int dice2;
-    @Column
     int result;
-    @Column(name = "winner")
     boolean isWinner;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "player_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
-    private Player player;
+    Long player_id;
 
 
     //Constructor #1
-    public Game(int dice1, int dice2, int result, boolean isWinner, Player player) {
+    public Game(int dice1, int dice2, int result, boolean isWinner, Long player_id) {
         this.dice1 = dice1;
         this.dice2 = dice2;
         this.result = result;
         this.isWinner = isWinner;
-        this.player = player;
+        this.player_id = player_id;
     }
 
     //Constructor #2
@@ -76,12 +64,12 @@ public class Game extends AbstractEntity implements Serializable {
         isWinner = winner;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Long getPlayer() {
+        return player_id;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayer(Long player_id) {
+        this.player_id = player_id;
     }
 
 
@@ -91,7 +79,7 @@ public class Game extends AbstractEntity implements Serializable {
                 "dice1=" + dice1 +
                 ", dice2=" + dice2 +
                 ", isWinner=" + isWinner +
-                ", player=" + player +
+                ", player_id=" + player_id +
                 '}';
     }
 

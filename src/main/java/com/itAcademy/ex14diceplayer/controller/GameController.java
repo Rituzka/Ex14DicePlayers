@@ -49,7 +49,7 @@ public class GameController {
     //Get games from a player
     @GetMapping("/{id}/games")
     public ResponseEntity<?> getGamesByPlayer(@PathVariable(name = "id") Player player) {
-        List<Game> games = gameService.findAllGamesByPlayer(player);
+        List<Game> games = gameService.findAllGamesByPlayer(player.getId());
         return ResponseEntity.ok().body(games);
     }
 }

@@ -1,25 +1,24 @@
 package com.itAcademy.ex14diceplayer.model;
 
 
-import javax.persistence.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
-@Entity
-@Table(name = "players")
+@Document(collection = "players")
 public class Player extends AbstractEntity implements Serializable {
 
     private static final long serialVersionUID = -5799651275963827478L;
 
-    @Column(name = "player_username", unique = true)
-    String username;
 
-    @Column(name = "registration_date")
-    @Temporal(TemporalType.TIMESTAMP)
+    private String username;
     Date registrationDate = new Date(System.currentTimeMillis());
-    @Column
     Double winnerAvg;
+    List<Game> games = new ArrayList<>();
 
 
     //Constructor #1
@@ -27,6 +26,7 @@ public class Player extends AbstractEntity implements Serializable {
     public Player(String username) {
         this.username = verifyUsername(username);
         this.registrationDate = new Date(System.currentTimeMillis());
+        this.winnerAvg = 0.00;
     }
 
     //Constructor #2
