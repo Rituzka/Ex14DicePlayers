@@ -1,7 +1,7 @@
 # Ex14DicePlayers
 ## Backend Spring boot API REST Game Roll-dice
 
-(https://raw.githubusercontent.com/Rituzka/Ex14DicePlayers/main/Assets/dices.png)
+![dices](https://raw.githubusercontent.com/Rituzka/Ex14DicePlayers/main/Assets/dices.png)
 
 ### Description:
 
