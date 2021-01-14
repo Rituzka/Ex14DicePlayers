@@ -10,17 +10,17 @@ import java.util.Date;
 @Table(name = "players")
 public class Player extends AbstractEntity implements Serializable {
 
-    private static final long serialVersionUID = -5799651275963827478L;
+    private static final long serialVersionUID = 2376618923503219123L;
 
     @Column(name = "player_username", unique = true)
     String username;
-
+    @Column
+    String password;
     @Column(name = "registration_date")
     @Temporal(TemporalType.TIMESTAMP)
     Date registrationDate = new Date(System.currentTimeMillis());
     @Column
     Double winnerAvg;
-
 
     //Constructor #1
 
@@ -47,6 +47,15 @@ public class Player extends AbstractEntity implements Serializable {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Double getWinnerAvg() {
