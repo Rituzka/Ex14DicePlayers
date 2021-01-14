@@ -1,10 +1,17 @@
 package com.itAcademy.ex14diceplayer.controller;
 
+import com.itAcademy.ex14diceplayer.model.AuthenticationResponseModel;
 import com.itAcademy.ex14diceplayer.model.Player;
+import com.itAcademy.ex14diceplayer.security.MyUserDetailService;
+import com.itAcademy.ex14diceplayer.service.JwtUtil;
 import com.itAcademy.ex14diceplayer.service.PlayerServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +24,30 @@ public class PlayerController {
 
     @Autowired
     PlayerServiceImpl playerService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private MyUserDetailService myUserDetailService;
+    @Autowired
+    private JwtUtil jwtTokenUtil;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     //Add a new Player
-    @PostMapping
-    public ResponseEntity<?> addNewPlayer(@RequestBody Player player) {
+    @PostMapping("/newPlayer")
+    public ResponseEntity<?> addNewPlayer(@RequestBody Player player) throws Exception {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(player.getUsername(), player.getPassword())
+            );
+        }catch (BadCredentialsException e) {
+            throw new Exception("Incorrect username or Password", e);
+        }
+        final UserDetails userDetails = myUserDetailService
+                .loadUserByUsername(player.getUsername());
+        final String jwt = jwtTokenUtil.generateToken(userDetails);
+
         playerService.addPlayer(player);
-        return ResponseEntity.status(HttpStatus.CREATED).body(player);
+        return ResponseEntity.ok(new AuthenticationResponseModel(jwt));
     }
 
     //get a player by id
