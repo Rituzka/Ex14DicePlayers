@@ -33,20 +33,21 @@ public class PlayerController {
 
 
     //Add a new Player
-    @PostMapping("/newPlayer")
-    public ResponseEntity<?> addNewPlayer(@RequestBody Player player) throws Exception {
-        try {
+    @PostMapping("/signup")
+    public ResponseEntity<?> addNewPlayer (@RequestBody Player player){
+        playerService.addPlayer(player);
+        return ResponseEntity.status(HttpStatus.CREATED).body(player);
+    }
+
+    //Authenticate a player and give a jwt
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Player player){
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(player.getUsername(), player.getPassword())
             );
-        }catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or Password", e);
-        }
         final UserDetails userDetails = myUserDetailService
                 .loadUserByUsername(player.getUsername());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
-
-        playerService.addPlayer(player);
         return ResponseEntity.ok(new AuthenticationResponseModel(jwt));
     }
 
