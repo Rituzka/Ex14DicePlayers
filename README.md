@@ -1,7 +1,7 @@
-# Ex14DicePlayers
+# Dice-roller game
 ## Backend Spring boot API REST Game Roll-dice
 
-### language: JAVA / BBDD: SQL, MONGODB / JWT SPRING SECURITY
+### Exercise 15 ITAcademy. Language: JAVA / BBDD: SQL, MONGODB / JWT SPRING SECURITY
 ![dices](https://raw.githubusercontent.com/Rituzka/Ex14DicePlayers/main/Assets/dices.png)
 
 ### Description:
