@@ -14,7 +14,7 @@ public interface IPlayerService {
     Iterable<Player> findAll();
 
     //find a player by id
-    Optional<Player> findPlayerById(long id);
+    Optional<Player> findPlayerById(Long id);
 
     //update the username of a player
     void updatePlayer(Player player);
@@ -29,5 +29,5 @@ public interface IPlayerService {
     Player findPlayerByLowAvg();
 
     //delete a player by id
-    void deletePlayerById(long id);
+    void deletePlayerById(Long id);
 }

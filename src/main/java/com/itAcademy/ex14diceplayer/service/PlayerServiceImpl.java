@@ -40,7 +40,7 @@ public class PlayerServiceImpl implements IPlayerService {
 
     //Find a player by Id
     @Override
-    public Optional<Player> findPlayerById(long id) {
+    public Optional<Player> findPlayerById(Long id) {
         Optional<Player> playerFound = IPlayerRepository.findById(id);
         if (playerFound.isPresent())
             return playerFound;
@@ -91,7 +91,7 @@ public class PlayerServiceImpl implements IPlayerService {
 
     //Delete a player by id
     @Override
-    public void deletePlayerById(long id) {
+    public void deletePlayerById(Long id) {
         IPlayerRepository.deleteById(id);
     }
 }

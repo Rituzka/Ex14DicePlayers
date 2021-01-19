@@ -1,6 +1,5 @@
 package com.itAcademy.ex14diceplayer.controller;
 
-import com.itAcademy.ex14diceplayer.exception.ResourceNotFoundException;
 import com.itAcademy.ex14diceplayer.model.Game;
 import com.itAcademy.ex14diceplayer.model.Player;
 import com.itAcademy.ex14diceplayer.service.GameServiceImpl;
@@ -9,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,26 +22,28 @@ public class GameController {
     PlayerServiceImpl playerService;
 
     //Create new game by a player
-    @PostMapping("/{id}/games/newgame")
-    public Game addNewGame(@PathVariable(name = "id") long id) {
-        Optional<Player> playerFound = playerService.findPlayerById(id);
-        if (playerFound.isPresent()) {
-            long gameId = gameService.rollDice(playerFound.get());
-            return gameService.findGameById(gameId);
-        } else
-            throw new ResourceNotFoundException("Player not Found");
+    @PostMapping("/{id}/games")
+    public ResponseEntity<?> addNewGame(@PathVariable(name = "id")Long id) {
+        List<Game> games = new ArrayList<>();
+          Optional <Player> playerFound = playerService.findPlayerById(id);
+          if(playerFound.isPresent()) {
+              Long gameId = gameService.rollDice(playerFound.get());
+              Game newGame = gameService.findGameById(gameId);
+              games.add(newGame);
+          }
+         return ResponseEntity.ok().body(games);
     }
 
     //get a game by id
     @GetMapping("/games/{id}")
-    public ResponseEntity<?> getGameById(@PathVariable long id) {
+    public ResponseEntity<?> getGameById(@PathVariable Long id) {
         Game game = gameService.findGameById(id);
         return ResponseEntity.ok().body(game);
     }
 
     //Delete a game
     @DeleteMapping("/games/{id}")
-    public ResponseEntity<?> deleteGame(@PathVariable long id) {
+    public ResponseEntity<?> deleteGame(@PathVariable Long id) {
         gameService.deleteById(id);
         return ResponseEntity.ok().build();
     }

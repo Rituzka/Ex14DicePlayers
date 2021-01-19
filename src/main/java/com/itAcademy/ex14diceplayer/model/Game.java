@@ -9,21 +9,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Game {
 
     @Id
-    long id;
+    Long id;
     int dice1;
     int dice2;
     int result;
     boolean isWinner;
-    Long player_id;
+    Player player;
 
 
     //Constructor #1
-    public Game(int dice1, int dice2, int result, boolean isWinner, long player_id) {
+    public Game(int dice1, int dice2, int result, boolean isWinner, Player player) {
         this.dice1 = dice1;
         this.dice2 = dice2;
         this.result = result;
         this.isWinner = isWinner;
-        this.player_id = player_id;
+        this.player = player;
     }
 
     //Constructor #2
@@ -33,11 +33,11 @@ public class Game {
     //getters & setters
 
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -73,12 +73,12 @@ public class Game {
         isWinner = winner;
     }
 
-    public Long getPlayer() {
-        return player_id;
+    public Player getPlayer() {
+        return player;
     }
 
-    public void setPlayer(Long player_id) {
-        this.player_id = player_id;
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
 
@@ -88,8 +88,7 @@ public class Game {
                 "dice1=" + dice1 +
                 ", dice2=" + dice2 +
                 ", isWinner=" + isWinner +
-                ", player_id=" + player_id +
+                ", player=" + player+
                 '}';
     }
-
 }

@@ -16,29 +16,31 @@ public class Player  {
     public static final String SEQUENCE_NAME = "id_sequence";
 
     @Id
-    private long id;
+    private Long id;
     private String username;
     Date registrationDate = new Date(System.currentTimeMillis());
     Double winnerAvg;
-    List<Game> games = new ArrayList<>();
+    List<Game> games;
 
     //Constructor #1
 
-    public Player(String username) {
+    public Player(String username, List<Game> games) {
         this.username = verifyUsername(username);
         this.registrationDate = new Date(System.currentTimeMillis());
         this.winnerAvg = 0.00;
+        this.games = games;
     }
 
     //Constructor #2
-    public Player() {
+    protected Player() {
+        this.games = new ArrayList<>();
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

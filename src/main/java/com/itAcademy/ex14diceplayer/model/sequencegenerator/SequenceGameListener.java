@@ -12,8 +12,9 @@ public class SequenceGameListener extends AbstractMongoEventListener<Game> {
 
     @Override
     public void onBeforeConvert(BeforeConvertEvent<Game> event) {
-        if(event.getSource().getId() < 1) {
-            event.getSource().setId(sequenceService.generateSequence(Player.SEQUENCE_NAME));
+        if (event.getSource().getId() >= 1) {
+            return;
         }
+        event.getSource().setId(sequenceService.generateSequence(Player.SEQUENCE_NAME));
     }
 }

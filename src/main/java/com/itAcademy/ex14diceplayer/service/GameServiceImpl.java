@@ -31,19 +31,19 @@ public class GameServiceImpl implements IGameService {
 
     //find a game by id
     @Override
-    public Game findGameById(long id) {
+    public Game findGameById(Long id) {
         return IGameRepository.findById(id).get();
     }
 
     //gives a list of games of one Player
     @Override
-    public List<Game> findAllGamesByPlayer(long player_id) {
+    public List<Game> findAllGamesByPlayer(Long player_id) {
         return IGameRepository.findAllByPlayer(player_id);
     }
 
     //delete
     @Override
-    public void deleteById(long id) {
+    public void deleteById(Long id) {
         IGameRepository.deleteById(id);
     }
 
@@ -60,8 +60,8 @@ public class GameServiceImpl implements IGameService {
 
         boolean isWinner = isWinner(result);
 
-        long player_id = player.getId();
-        Game newGame = new Game(dice1, dice2, result, isWinner, player_id);
+        Long player_id = player.getId();
+        Game newGame = new Game(dice1, dice2, result, isWinner, player);
         addGame(newGame);
         winAvg(player);
         playerservice.updatePlayer(player);
