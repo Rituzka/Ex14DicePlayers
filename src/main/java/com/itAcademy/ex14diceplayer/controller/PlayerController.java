@@ -26,7 +26,7 @@ public class PlayerController {
 
     //get a player by id
     @GetMapping("/{id}")
-    public Optional<Player> getPlayerById(@PathVariable Long id) {
+    public Optional<Player> getPlayerById(@PathVariable long id) {
         return playerService.findPlayerById(id);
     }
 
@@ -39,10 +39,9 @@ public class PlayerController {
 
     //Delete a player
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePlayerById(@PathVariable Long id) {
+    public ResponseEntity<?> deletePlayerById(@PathVariable long id) {
         playerService.deletePlayerById(id);
         return ResponseEntity.ok().build();
-
     }
 
     //Get all the players

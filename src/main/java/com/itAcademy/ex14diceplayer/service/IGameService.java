@@ -12,13 +12,13 @@ public interface IGameService {
     void addGame(Game game);
 
     //Find a game by id
-    Game findGameById(Long id);
+    Game findGameById(long id);
 
     //Get list of games by an specific player
-    List<Game> findAllGamesByPlayer(Long player_id);
+    List<Game> findAllGamesByPlayer(long player_id);
 
     //Delete a game by id
-    void deleteById(Long id);
+    void deleteById(long id);
 
     //Delete all games
     void deleteAllGames();

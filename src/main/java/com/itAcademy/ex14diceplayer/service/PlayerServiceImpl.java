@@ -3,6 +3,7 @@ package com.itAcademy.ex14diceplayer.service;
 
 import com.itAcademy.ex14diceplayer.exception.ResourceNotFoundException;
 import com.itAcademy.ex14diceplayer.model.Player;
+import com.itAcademy.ex14diceplayer.model.sequencegenerator.SequenceGeneratorService;
 import com.itAcademy.ex14diceplayer.repository.IPlayerRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,25 +17,31 @@ import java.util.stream.Collectors;
 
 @Service
 public class PlayerServiceImpl implements IPlayerService {
+
     @Autowired
-    private IPlayerRepository playerRepository;
+    private IPlayerRepository IPlayerRepository;
+
+    @Autowired
+    private SequenceGeneratorService sequenceGenerator;
+
 
     //Add a new player
     @Override
     public void addPlayer(Player player) {
-        playerRepository.save(player);
+        player.setId(sequenceGenerator.generateSequence(Player.SEQUENCE_NAME));
+        IPlayerRepository.save(player);
     }
 
     //Find all players
     @Override
     public Iterable<Player> findAll() {
-        return playerRepository.findAll();
+        return IPlayerRepository.findAll();
     }
 
     //Find a player by Id
     @Override
-    public Optional<Player> findPlayerById(Long id) {
-        Optional<Player> playerFound = playerRepository.findById(id);
+    public Optional<Player> findPlayerById(long id) {
+        Optional<Player> playerFound = IPlayerRepository.findById(id);
         if (playerFound.isPresent())
             return playerFound;
         else
@@ -44,10 +51,10 @@ public class PlayerServiceImpl implements IPlayerService {
     //Modify username of a player
     @Override
     public void updatePlayer(Player playerRequest) {
-        playerRepository.findById(playerRequest.getId()).map(playerDB -> {
+        IPlayerRepository.findById(playerRequest.getId()).map(playerDB -> {
                     BeanUtils.copyProperties(playerRequest, playerDB);
                     ;
-                    return playerRepository.save(playerDB);
+                    return IPlayerRepository.save(playerDB);
                 }
         ).orElseThrow(() -> new ResourceNotFoundException("Shop not found"));
     }
@@ -84,7 +91,7 @@ public class PlayerServiceImpl implements IPlayerService {
 
     //Delete a player by id
     @Override
-    public void deletePlayerById(Long id) {
-        playerRepository.deleteById(id);
+    public void deletePlayerById(long id) {
+        IPlayerRepository.deleteById(id);
     }
 }

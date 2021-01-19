@@ -1,15 +1,15 @@
 package com.itAcademy.ex14diceplayer.model;
 
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.io.Serializable;
-
 
 
 @Document(collection = "games")
-public class Game extends AbstractEntity implements Serializable {
+public class Game {
 
+    @Id
+    long id;
     int dice1;
     int dice2;
     int result;
@@ -18,7 +18,7 @@ public class Game extends AbstractEntity implements Serializable {
 
 
     //Constructor #1
-    public Game(int dice1, int dice2, int result, boolean isWinner, Long player_id) {
+    public Game(int dice1, int dice2, int result, boolean isWinner, long player_id) {
         this.dice1 = dice1;
         this.dice2 = dice2;
         this.result = result;
@@ -31,6 +31,15 @@ public class Game extends AbstractEntity implements Serializable {
     }
 
     //getters & setters
+
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public int getDice1() {
         return dice1;

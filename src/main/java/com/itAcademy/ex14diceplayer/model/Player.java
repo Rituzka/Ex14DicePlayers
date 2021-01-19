@@ -1,25 +1,26 @@
 package com.itAcademy.ex14diceplayer.model;
 
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
 @Document(collection = "players")
-public class Player extends AbstractEntity implements Serializable {
+public class Player  {
 
-    private static final long serialVersionUID = -5799651275963827478L;
+    @Transient
+    public static final String SEQUENCE_NAME = "id_sequence";
 
-
+    @Id
+    private long id;
     private String username;
     Date registrationDate = new Date(System.currentTimeMillis());
     Double winnerAvg;
     List<Game> games = new ArrayList<>();
-
 
     //Constructor #1
 
@@ -31,6 +32,14 @@ public class Player extends AbstractEntity implements Serializable {
 
     //Constructor #2
     public Player() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -57,6 +66,13 @@ public class Player extends AbstractEntity implements Serializable {
         this.winnerAvg = winnerAvg;
     }
 
+    public List<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
 
     //put default username "Anonymous" in case finds an empty name
     private String verifyUsername(String username) {

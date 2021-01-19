@@ -23,10 +23,10 @@ public class GameController {
 
     //Create new game by a player
     @PostMapping("/{id}/games/newgame")
-    public Game addNewGame(@PathVariable(name = "id") Long id) {
+    public Game addNewGame(@PathVariable(name = "id") long id) {
         Optional<Player> playerFound = playerService.findPlayerById(id);
         if (playerFound.isPresent()) {
-            Long gameId = gameService.rollDice(playerFound.get());
+            long gameId = gameService.rollDice(playerFound.get());
             return gameService.findGameById(gameId);
         } else
             throw new ResourceNotFoundException("Player not Found");
@@ -34,14 +34,14 @@ public class GameController {
 
     //get a game by id
     @GetMapping("/games/{id}")
-    public ResponseEntity<?> getGameById(@PathVariable Long id) {
+    public ResponseEntity<?> getGameById(@PathVariable long id) {
         Game game = gameService.findGameById(id);
         return ResponseEntity.ok().body(game);
     }
 
     //Delete a game
     @DeleteMapping("/games/{id}")
-    public ResponseEntity<?> deleteGame(@PathVariable Long id) {
+    public ResponseEntity<?> deleteGame(@PathVariable long id) {
         gameService.deleteById(id);
         return ResponseEntity.ok().build();
     }
