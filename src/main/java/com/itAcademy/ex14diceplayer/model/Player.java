@@ -24,11 +24,10 @@ public class Player  {
 
     //Constructor #1
 
-    public Player(String username, List<Game> games) {
+    public Player(String username) {
         this.username = verifyUsername(username);
         this.registrationDate = new Date(System.currentTimeMillis());
         this.winnerAvg = 0.00;
-        this.games = games;
     }
 
     //Constructor #2
@@ -48,9 +47,7 @@ public class Player  {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public void setUsername(String username) {this.username = username; }
 
     public Date getRegistrationDate() {
         return registrationDate;
@@ -76,7 +73,11 @@ public class Player  {
         this.games = games;
     }
 
-    //put default username "Anonymous" in case finds an empty name
+    public void addGame(Game game) {
+        this.games.add(game);
+    }
+
+        //put default username "Anonymous" in case finds an empty name
     private String verifyUsername(String username) {
         if (username.isEmpty()) username = "Anonymous";
         return username;

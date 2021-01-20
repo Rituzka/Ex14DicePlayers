@@ -1,5 +1,6 @@
 package com.itAcademy.ex14diceplayer.service;
 
+import com.itAcademy.ex14diceplayer.model.Game;
 import com.itAcademy.ex14diceplayer.model.Player;
 
 import java.util.List;
@@ -12,6 +13,9 @@ public interface IPlayerService {
 
     //find all players
     Iterable<Player> findAll();
+
+    //add game to a player
+    void addNewGame(Game game, Long player_id);
 
     //find a player by id
     Optional<Player> findPlayerById(Long id);

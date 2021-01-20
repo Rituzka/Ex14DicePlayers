@@ -9,7 +9,7 @@ import java.util.List;
 public interface IGameService {
 
     //Add new game
-    void addGame(Game game);
+    void addGame(Game game, Long player_id);
 
     //Find a game by id
     Game findGameById(Long id);
@@ -19,9 +19,6 @@ public interface IGameService {
 
     //Delete a game by id
     void deleteById(Long id);
-
-    //Delete all games
-    void deleteAllGames();
 
     //Roll dice
     Long rollDice(Player player);

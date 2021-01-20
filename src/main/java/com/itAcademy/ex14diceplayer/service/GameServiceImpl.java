@@ -1,13 +1,16 @@
 package com.itAcademy.ex14diceplayer.service;
 
+import com.itAcademy.ex14diceplayer.exception.ResourceNotFoundException;
 import com.itAcademy.ex14diceplayer.model.Game;
 import com.itAcademy.ex14diceplayer.model.Player;
 import com.itAcademy.ex14diceplayer.model.sequencegenerator.SequenceGeneratorService;
 import com.itAcademy.ex14diceplayer.repository.IGameRepository;
+import com.itAcademy.ex14diceplayer.repository.IPlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -15,41 +18,42 @@ import java.util.stream.Collectors;
 public class GameServiceImpl implements IGameService {
 
     @Autowired
-    private IGameRepository IGameRepository;
+    private IGameRepository gameRepository;
     @Autowired
     private PlayerServiceImpl playerservice;
     @Autowired
     private SequenceGeneratorService sequenceServ;
+    @Autowired
+    private IPlayerRepository playerRepository;
 
 
     //Add a game
     @Override
-    public void addGame(Game game) {
-        game.setId(sequenceServ.generateSequence(Player.SEQUENCE_NAME));
-        IGameRepository.save(game);
+    public void addGame(Game game, Long player_id) {
+        Optional<Player> playerFound = playerRepository.findById(player_id);
+        if(playerFound.isPresent()) {
+            game.setId(sequenceServ.generateSequence(Player.SEQUENCE_NAME));
+            gameRepository.save(game);
+        }else
+            throw new ResourceNotFoundException("Player not found");
     }
 
     //find a game by id
     @Override
     public Game findGameById(Long id) {
-        return IGameRepository.findById(id).get();
+        return gameRepository.findById(id).get();
     }
 
     //gives a list of games of one Player
     @Override
     public List<Game> findAllGamesByPlayer(Long player_id) {
-        return IGameRepository.findAllByPlayer(player_id);
+       return gameRepository.findAllByPlayer(player_id);
     }
 
     //delete
     @Override
     public void deleteById(Long id) {
-        IGameRepository.deleteById(id);
-    }
-
-    @Override
-    public void deleteAllGames() {
-        IGameRepository.deleteAll();
+        gameRepository.deleteById(id);
     }
 
     @Override
@@ -61,18 +65,20 @@ public class GameServiceImpl implements IGameService {
         boolean isWinner = isWinner(result);
 
         Long player_id = player.getId();
-        Game newGame = new Game(dice1, dice2, result, isWinner, player);
-        addGame(newGame);
+        Game newGame = new Game(dice1, dice2, result, isWinner, player_id);
         winAvg(player);
-        playerservice.updatePlayer(player);
+        this.addGame(newGame, player_id);
+        player.addGame(newGame);
+        //playerservice.updatePlayer(player);
+        playerRepository.save(player);
 
         return newGame.getId();
     }
 
     @Override
     public void winAvg(Player player) {
-        List<Game> gamesWon = IGameRepository.findAllByPlayer(player.getId());
-        double winAvg = successAverage(gamesWon);
+        List<Game> gamesByPlayer = player.getGames();
+        double winAvg = successAverage(gamesByPlayer);
         player.setWinnerAvg(winAvg);
     }
 

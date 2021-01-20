@@ -14,16 +14,16 @@ public class Game {
     int dice2;
     int result;
     boolean isWinner;
-    Player player;
+    Long player_id;
 
 
     //Constructor #1
-    public Game(int dice1, int dice2, int result, boolean isWinner, Player player) {
+    public Game(int dice1, int dice2, int result, boolean isWinner, Long player_id) {
         this.dice1 = dice1;
         this.dice2 = dice2;
         this.result = result;
         this.isWinner = isWinner;
-        this.player = player;
+        this.player_id = player_id;
     }
 
     //Constructor #2
@@ -73,12 +73,12 @@ public class Game {
         isWinner = winner;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Long getPlayer_id() {
+        return player_id;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setPlayer_id(Long player_id) {
+        this.player_id = player_id;
     }
 
 
@@ -88,7 +88,7 @@ public class Game {
                 "dice1=" + dice1 +
                 ", dice2=" + dice2 +
                 ", isWinner=" + isWinner +
-                ", player=" + player+
+                ", player_id=" + player_id+
                 '}';
     }
 }
