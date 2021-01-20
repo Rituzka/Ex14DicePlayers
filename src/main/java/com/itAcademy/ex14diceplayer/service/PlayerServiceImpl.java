@@ -5,6 +5,7 @@ import com.itAcademy.ex14diceplayer.exception.ResourceNotFoundException;
 import com.itAcademy.ex14diceplayer.model.Game;
 import com.itAcademy.ex14diceplayer.model.Player;
 import com.itAcademy.ex14diceplayer.model.sequencegenerator.SequenceGeneratorService;
+import com.itAcademy.ex14diceplayer.repository.IGameRepository;
 import com.itAcademy.ex14diceplayer.repository.IPlayerRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ public class PlayerServiceImpl implements IPlayerService {
 
     @Autowired
     private IPlayerRepository playerRepository;
-
     @Autowired
     private SequenceGeneratorService sequenceGenerator;
 
@@ -104,4 +104,7 @@ public class PlayerServiceImpl implements IPlayerService {
     public void deletePlayerById(Long id) {
         playerRepository.deleteById(id);
     }
+
+
+
 }

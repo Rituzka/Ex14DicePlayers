@@ -1,21 +1,30 @@
 {
 	"info": {
-		"_postman_id": "115fc728-9c23-4d9b-b9ed-d3727f6764ca",
-		"name": "DiceGame",
+		"_postman_id": "56393945-eb91-47f4-999e-b8a9fdfa53fe",
+		"name": "DiceGameMongo",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "GetAllPlayers",
+			"name": "AddPlayer",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " { \r\n    \"username\": \"Spiderman\"     \r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
-					"raw": "localhost:8080/players",
+					"raw": "localhost:8081/players",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"players"
 					]
@@ -24,25 +33,16 @@
 			"response": []
 		},
 		{
-			"name": "AddPlayer",
+			"name": "GetAllPlayers",
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": " {\r\n        \"username\": \"Dragon Ball\"\r\n      \r\n }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
 				"url": {
-					"raw": "localhost:8080/players",
+					"raw": "localhost:8081/players",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"players"
 					]
@@ -56,55 +56,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/players/4",
+					"raw": "localhost:8081/players/175",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"players",
-						"4"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AddNewGame",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/players/3/games/newgame",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"players",
-						"3",
-						"games",
-						"newgame"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetGameByID",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/players/games/15",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"players",
-						"games",
-						"15"
+						"175"
 					]
 				}
 			},
@@ -116,14 +75,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/players/3/games",
+					"raw": "localhost:8081/players/4/games",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"players",
-						"3",
+						"4",
 						"games"
 					]
 				}
@@ -145,14 +104,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/players/60",
+					"raw": "localhost:8081/players/175",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"players",
-						"60"
+						"175"
 					]
 				}
 			},
@@ -173,15 +132,35 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/players/games/38",
+					"raw": "localhost:8081/players/games/190",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"players",
 						"games",
-						"38"
+						"190"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetGameByID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/players/games/179",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"players",
+						"games",
+						"179"
 					]
 				}
 			},
@@ -193,11 +172,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/players/ranking",
+					"raw": "localhost:8081/players/ranking",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"players",
 						"ranking"
@@ -212,11 +191,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/players/ranking/winner",
+					"raw": "localhost:8081/players/ranking/winner",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"players",
 						"ranking",
@@ -232,11 +211,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/players/ranking/loser",
+					"raw": "localhost:8081/players/ranking/loser",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
+					"port": "8081",
 					"path": [
 						"players",
 						"ranking",
@@ -245,32 +224,55 @@
 				}
 			},
 			"response": []
-		}
-	],
-	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					"pm.environment.set(\"RandomNumber\", _.random(1,6));"
-				]
-			}
 		},
 		{
-			"listen": "test",
-			"script": {
-				"type": "text/javascript",
-				"exec": [
-					""
-				]
-			}
-		}
-	],
-	"variable": [
+			"name": "AddNewGame",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/players/240/games",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"players",
+						"240",
+						"games"
+					]
+				}
+			},
+			"response": []
+		},
 		{
-			"key": "RandomVariable",
-			"value": ""
+			"name": "GetAllGamesByPlayer",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8081/players/240/games",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"players",
+						"240",
+						"games"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }

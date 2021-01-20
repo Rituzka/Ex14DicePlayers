@@ -10,8 +10,7 @@ import java.util.List;
 @Repository
 public interface IGameRepository extends MongoRepository<Game, Long> {
 
-    //List<Game> findAllByPlayer(Long player_id);
-
-    @Query("{'Player.games':?0}")
+    @Query("{ 'player_id' : ?0 }")
     List<Game> findAllByPlayer(Long player_id);
+
 }

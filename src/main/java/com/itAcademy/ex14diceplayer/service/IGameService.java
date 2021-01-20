@@ -14,9 +14,6 @@ public interface IGameService {
     //Find a game by id
     Game findGameById(Long id);
 
-    //Get list of games by an specific player
-    List<Game> findAllGamesByPlayer(Long player_id);
-
     //Delete a game by id
     void deleteById(Long id);
 
@@ -28,5 +25,8 @@ public interface IGameService {
 
     //update win average rolls
     void winAvg(Player player);
+
+    //Get list of games by an specific player
+    List<Game> findAllGamesByPlayer(Long player_id);
 
 }

@@ -34,4 +34,7 @@ public interface IPlayerService {
 
     //delete a player by id
     void deletePlayerById(Long id);
+
+
+
 }

@@ -44,12 +44,6 @@ public class GameServiceImpl implements IGameService {
         return gameRepository.findById(id).get();
     }
 
-    //gives a list of games of one Player
-    @Override
-    public List<Game> findAllGamesByPlayer(Long player_id) {
-       return gameRepository.findAllByPlayer(player_id);
-    }
-
     //delete
     @Override
     public void deleteById(Long id) {
@@ -86,6 +80,13 @@ public class GameServiceImpl implements IGameService {
     public boolean isWinner(int result) {
         return result == 7;
     }
+
+    //gives a list of games of one Player
+    @Override
+    public List<Game> findAllGamesByPlayer(Long player_id) {
+        return gameRepository.findAllByPlayer(player_id);
+    }
+
 
     //PRIVATE METHODS
     //calculates the average of all games from one player
